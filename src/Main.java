@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
         String[][] maze = getMaze("src/grid");
 
         MazeSolver m = new MazeSolver(maze);
@@ -15,10 +14,11 @@ public class Main {
         int row = maze.length;
 
         while (!m.getLocation().equals(col + ", " + row)){
-            m.checkUp();
-            m.checkDown();
-            m.checkRight();
-            m.checkLeft();
+            System.out.println(m.getLocation());
+            for (int i = 0; i < maze.length; i++){
+                System.out.println(Arrays.toString(maze[i]));
+            }
+            m.runMaze();
         }
 
         System.out.println(m.path());
