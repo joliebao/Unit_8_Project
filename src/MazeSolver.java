@@ -15,11 +15,11 @@ public class MazeSolver {
     }
 
     private void checkUp(){
-        if (maze[playerY - 1][playerX].equals(".")){
+        if (maze[playerY - 1][playerX].equals(".")) {
             playerY--;
+            maze[playerY + 1][playerX] = "#";
+            coordinates.add("(" + playerY + ", " + playerX + ")");
         }
-        maze[playerY + 1][playerX] = "#";
-        coordinates.add("(" + playerY + ", " + playerX + ")");
     }
 
     private void checkDown(){
@@ -47,13 +47,14 @@ public class MazeSolver {
     }
 
     public void runMaze(){
-        if (playerX != 0){
+        if (playerY != 0){
             checkLeft();
-        } else if (playerX != maze[0].length){
+        } if (playerY != maze[0].length){
             checkRight();
-        } else if (playerY != 0) {
+        } if (playerX != 0) {
             checkUp();
-        } else {
+        } if (playerX != maze.length) {
+            System.out.println("Running");
             checkDown();
         }
     }
