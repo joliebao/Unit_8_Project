@@ -15,55 +15,59 @@ public class MazeSolver {
     }
 
     private void checkUp(){
-        if (maze[playerY - 1][playerX].equals(".")) {
-            playerY--;
-            maze[playerY + 1][playerX] = "#";
-            coordinates.add("(" + playerY + ", " + playerX + ")");
-        }
+        maze[playerY][playerX] = "#";
+        coordinates.add("(" + playerY + ", " + playerX + ")");
     }
 
     private void checkDown(){
-        if (maze[playerY + 1][playerX].equals(".")) {
-            playerY++;
-            maze[playerY - 1][playerX] = "#";
-            coordinates.add("(" + playerY + ", " + playerX + ")");
-        }
+        maze[playerY][playerX] = "#";
+        coordinates.add("(" + playerY + ", " + playerX + ")");
     }
 
     private void checkRight(){
-        if (maze[playerY][playerX + 1].equals(".")) {
-            playerX++;
-            maze[playerY][playerX - 1] = "#";
-            coordinates.add("(" + playerY + ", " + playerX + ")");
-        }
+        maze[playerY][playerX] = "#";
+        coordinates.add("(" + playerY + ", " + playerX + ")");
     }
 
     private void checkLeft(){
-        if (maze[playerY][playerX - 1].equals(".")){
-            playerX--;
-            maze[playerY][playerX + 1] = "#";
-            coordinates.add("(" + playerY + ", " + playerX + ")");
-        }
+        maze[playerY][playerX] = "#";
+        coordinates.add("(" + playerY + ", " + playerX + ")");
     }
 
     public void runMaze(){
-        if (playerY != 0){
-            checkLeft();
-        } if (playerY != maze[0].length){
-            checkRight();
-        } if (playerX != 0) {
+        if (playerY > 0 && maze[playerY - 1][playerX].equals(".")) {
             checkUp();
-        } if (playerX != maze.length) {
-            System.out.println("Running");
+            playerY--;
+            if (playerY < 0) {
+                playerY = 0;
+            }
+        } else if (playerY < maze.length && maze[playerY + 1][playerX].equals(".")) {
             checkDown();
+            playerY++;
+            if (playerY > maze.length - 1) {
+                playerY = maze.length - 1;
+            }
+        } else if (playerX > 0 && maze[playerY][playerX - 1].equals(".")){
+            checkLeft();
+            playerX--;
+            if (playerX < 0) {
+                playerX = 0;
+            }
+        } else if (playerX < maze[0].length && maze[playerY][playerX + 1].equals(".")) {
+            checkRight();
+            playerX++;
+            if (playerX > maze[0].length - 1) {
+                playerX = maze[0].length - 1;
+            }
         }
     }
 
-    public String getLocation(){
-        return (playerY + ", " + playerX);
+    public String getLocation(){ // testing method --- where is maze solver at
+        return ("(" + playerY + ", " + playerX + ")");
     }
 
     public ArrayList<String> path(){
+        coordinates.add(getLocation());
         return coordinates;
     }
 }

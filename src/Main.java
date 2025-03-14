@@ -10,10 +10,11 @@ public class Main {
 
         MazeSolver m = new MazeSolver(maze);
 
-        int col = maze[0].length;
-        int row = maze.length;
+        int col = maze[0].length - 1;
+        int row = maze.length - 1;
 
-        while (!m.getLocation().equals(col + ", " + row)){
+        while (!m.getLocation().equals("(" + row + ", " + col + ")")){
+            System.out.println(row + ", " + col);
             System.out.println(m.getLocation());
             for (int i = 0; i < maze.length; i++){
                 System.out.println(Arrays.toString(maze[i]));
