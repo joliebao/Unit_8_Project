@@ -34,7 +34,7 @@ public class MazeSolver {
         coordinates.add("(" + playerY + ", " + playerX + ")");
     }
 
-    public void runMaze(){
+    public boolean runMaze(){
         if (playerY > 0 && maze[playerY - 1][playerX].equals(".")) {
             checkUp();
             playerY--;
@@ -59,7 +59,10 @@ public class MazeSolver {
             if (playerX > maze[0].length - 1) {
                 playerX = maze[0].length - 1;
             }
+        } else {
+            return false;
         }
+        return true;
     }
 
     public String getLocation(){ // testing method --- where is maze solver at

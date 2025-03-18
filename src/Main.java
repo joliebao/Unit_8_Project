@@ -9,6 +9,7 @@ public class Main {
         String[][] maze = getMaze("src/grid");
 
         MazeSolver m = new MazeSolver(maze);
+//        Fork f = new Fork(maze, )
 
         int col = maze[0].length - 1;
         int row = maze.length - 1;
