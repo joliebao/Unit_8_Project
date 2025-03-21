@@ -6,12 +6,14 @@ public class MazeSolver {
     private int playerX;
     private int playerY;
     private ArrayList<String> coordinates;
+    private boolean deadEnd;
 
     public MazeSolver(String[][] m){
         coordinates = new ArrayList<String>();
         maze = m;
         playerX = 0;
         playerY = 0;
+        deadEnd = false;
     }
 
     private void checkUp(){
@@ -60,9 +62,17 @@ public class MazeSolver {
                 playerX = maze[0].length - 1;
             }
         } else {
-            return false;
+            deadEnd = true;
         }
-        return true;
+        return deadEnd;
+    }
+
+    public void setPlayerX(int playerX) {
+        this.playerX = playerX;
+    }
+
+    public void setPlayerY(int playerY) {
+        this.playerY = playerY;
     }
 
     public String getLocation(){ // testing method --- where is maze solver at
