@@ -5,6 +5,7 @@ public class MazeSolver {
     private String[][] maze;
     private int playerX;
     private int playerY;
+    private boolean forked;
     private ArrayList<String> coordinates;
     private boolean deadEnd;
 
@@ -14,6 +15,7 @@ public class MazeSolver {
         playerX = 0;
         playerY = 0;
         deadEnd = false;
+        forked = false;
     }
 
     private void checkUp(){
@@ -36,7 +38,11 @@ public class MazeSolver {
         coordinates.add("(" + playerY + ", " + playerX + ")");
     }
 
-    public boolean runMaze(){
+    //go through entire maze one dead end at a time
+    //if dead end, go back to check point, and then test everything else
+
+    public void runMaze(){
+        takeFork();
         if (playerY > 0 && maze[playerY - 1][playerX].equals(".")) {
             checkUp();
             playerY--;
@@ -62,17 +68,22 @@ public class MazeSolver {
                 playerX = maze[0].length - 1;
             }
         } else {
-            deadEnd = true;
+            forked = true;
         }
-        return deadEnd;
     }
 
-    public void setPlayerX(int playerX) {
-        this.playerX = playerX;
-    }
-
-    public void setPlayerY(int playerY) {
-        this.playerY = playerY;
+    public void takeFork(){
+        if (forked) {
+            int savePoint = coordinates.size() - 1;
+            int savedX = playerY;
+            int savedY = playerX;
+            for (int i = 0; i < coordinates.size() - savePoint; i++) {
+                coordinates.remove(i);
+            }
+            // set player position back to the saved last point
+            playerX = savedY;
+            playerY = savedX;
+        }
     }
 
     public String getLocation(){ // testing method --- where is maze solver at
