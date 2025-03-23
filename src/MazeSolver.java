@@ -3,86 +3,94 @@ import java.util.Arrays;
 
 public class MazeSolver {
     private String[][] maze;
-    private int playerX;
-    private int playerY;
-    private boolean forked;
+    private int playerX = 0;
+    private int playerY = 0;
+    private int paths = 0;
+    private int savedX;
+    private int savedY;
+    private int savedIdx;
     private ArrayList<String> coordinates;
     private boolean deadEnd;
 
+    // Constructor
     public MazeSolver(String[][] m){
         coordinates = new ArrayList<String>();
         maze = m;
-        playerX = 0;
-        playerY = 0;
         deadEnd = false;
-        forked = false;
     }
 
     private void checkUp(){
         maze[playerY][playerX] = "#";
         coordinates.add("(" + playerY + ", " + playerX + ")");
+        playerY--;
+        if (playerY < 0) {
+            playerY = 0;
+        }
     }
 
     private void checkDown(){
         maze[playerY][playerX] = "#";
         coordinates.add("(" + playerY + ", " + playerX + ")");
+        playerY++;
+        if (playerY > maze.length - 1) {
+            playerY = maze.length - 1;
+        }
     }
 
     private void checkRight(){
         maze[playerY][playerX] = "#";
         coordinates.add("(" + playerY + ", " + playerX + ")");
+        playerX++;
+        if (playerX > maze[0].length - 1) {
+            playerX = maze[0].length - 1;
+        }
     }
 
     private void checkLeft(){
         maze[playerY][playerX] = "#";
         coordinates.add("(" + playerY + ", " + playerX + ")");
+        playerX--;
+        if (playerX < 0) {
+            playerX = 0;
+        }
+    }
+
+    //count num of possible paths
+    public int getPaths(){
+        if (playerY > 0 && maze[playerY - 1][playerX].equals(".")) {
+            paths++;
+        } if (playerY < maze.length && maze[playerY + 1][playerX].equals(".")) {
+            paths++;
+        } if (playerX > 0 && maze[playerY][playerX - 1].equals(".")){
+            paths++;
+        } if (playerX < maze[0].length && maze[playerY][playerX + 1].equals(".")) {
+            paths++;
+        }
+        return paths;
     }
 
     //go through entire maze one dead end at a time
     //if dead end, go back to check point, and then test everything else
-
     public void runMaze(){
-        takeFork();
-        if (playerY > 0 && maze[playerY - 1][playerX].equals(".")) {
-            checkUp();
-            playerY--;
-            if (playerY < 0) {
-                playerY = 0;
+        paths = 0;
+        if (getPaths() == 1) {
+            if (playerY > 0 && maze[playerY - 1][playerX].equals(".")) {
+                checkUp();
+            } else if (playerY < maze.length && maze[playerY + 1][playerX].equals(".")) {
+                checkDown();
+            } else if (playerX > 0 && maze[playerY][playerX - 1].equals(".")) {
+                checkLeft();
+            } else if (playerX < maze[0].length && maze[playerY][playerX + 1].equals(".")) {
+                checkRight();
             }
-        } else if (playerY < maze.length && maze[playerY + 1][playerX].equals(".")) {
-            checkDown();
-            playerY++;
-            if (playerY > maze.length - 1) {
-                playerY = maze.length - 1;
+        } else if (getPaths() > 1){
+            savedX = playerX;
+            savedY = playerY;
+            savedIdx = coordinates.size();
+        } else{
+            for (int i = 0; i < coordinates.size() - savedIdx; i ++){
+                coordinates.removeLast();
             }
-        } else if (playerX > 0 && maze[playerY][playerX - 1].equals(".")){
-            checkLeft();
-            playerX--;
-            if (playerX < 0) {
-                playerX = 0;
-            }
-        } else if (playerX < maze[0].length && maze[playerY][playerX + 1].equals(".")) {
-            checkRight();
-            playerX++;
-            if (playerX > maze[0].length - 1) {
-                playerX = maze[0].length - 1;
-            }
-        } else {
-            forked = true;
-        }
-    }
-
-    public void takeFork(){
-        if (forked) {
-            int savePoint = coordinates.size() - 1;
-            int savedX = playerY;
-            int savedY = playerX;
-            for (int i = 0; i < coordinates.size() - savePoint; i++) {
-                coordinates.remove(i);
-            }
-            // set player position back to the saved last point
-            playerX = savedY;
-            playerY = savedX;
         }
     }
 
