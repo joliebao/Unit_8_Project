@@ -73,24 +73,47 @@ public class MazeSolver {
     //if dead end, go back to check point, and then test everything else
     public void runMaze(){
         paths = 0;
-        if (getPaths() == 1) {
-            if (playerY > 0 && maze[playerY - 1][playerX].equals(".")) {
-                checkUp();
-            } else if (playerY < maze.length && maze[playerY + 1][playerX].equals(".")) {
-                checkDown();
-            } else if (playerX > 0 && maze[playerY][playerX - 1].equals(".")) {
-                checkLeft();
-            } else if (playerX < maze[0].length && maze[playerY][playerX + 1].equals(".")) {
-                checkRight();
-            }
-        } else if (getPaths() > 1){
-            savedX = playerX;
-            savedY = playerY;
+        System.out.println(getPaths());
+        getLocation();
+        if (getPaths() == 1) {  // only one path
+            move();
+        } else if (getPaths() > 1){ // more than one path
+            savedX = playerX - 1;
             savedIdx = coordinates.size();
-        } else{
+            move();
+        } else if (getPaths() == 0){    // dead end
+            // Setting x and y location bounds
+            if (savedX < 0){
+                savedX = 0;
+            } else if (savedX > maze[0].length - 1){
+                savedX = maze[0].length - 1;
+            }
+            savedY = playerY - 1;
+            if (savedY < 0){
+                savedY = 0;
+            } else if (savedY > maze.length - 1){
+                savedY = maze.length - 1;
+            }
+
+            maze[playerY][playerX] = "#";
             for (int i = 0; i < coordinates.size() - savedIdx; i ++){
                 coordinates.removeLast();
             }
+            maze[savedY][savedX] = ".";
+            playerX = savedX;
+            playerY = savedY;
+        }
+    }
+
+    public void move(){
+        if (playerY > 0 && maze[playerY - 1][playerX].equals(".")) {
+            checkUp();
+        } else if (playerY < maze.length && maze[playerY + 1][playerX].equals(".")) {
+            checkDown();
+        } else if (playerX > 0 && maze[playerY][playerX - 1].equals(".")) {
+            checkLeft();
+        } else if (playerX < maze[0].length && maze[playerY][playerX + 1].equals(".")) {
+            checkRight();
         }
     }
 
