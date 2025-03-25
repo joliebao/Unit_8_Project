@@ -10,26 +10,44 @@ public class MazeSolver {
     private int savedY;
     private int savedIdx;
     private ArrayList<String> coordinates;
-    private boolean deadEnd;
+    private boolean resetPlayerXPos;
+    private boolean resetPlayerXNeg;
+    private boolean resetPlayerYPos;
+    private boolean resetPlayerYNeg;
 
     // Constructor
     public MazeSolver(String[][] m){
         coordinates = new ArrayList<String>();
         maze = m;
-        deadEnd = false;
     }
 
     //count num of possible paths
     public int getPaths(){
         // need to fix these conditions
-        System.out.println("Future path: " + (playerX + 1) + "," + (playerY + 1));
-        if (playerY > 0 && maze[playerY - 1][playerX].equals(".")) {
+
+        if (playerX + 1 == maze.length){
+            playerX --;
+            resetPlayerXPos = true;
+        } else if (playerX - 1 == -1){
+            playerX ++;
+            resetPlayerXNeg = true;
+        }
+
+        if (playerY + 1 == maze[0].length){
+            playerY --;
+            resetPlayerYPos = true;
+        } else if (playerY - 1 == -1){
+            playerY ++;
+            resetPlayerYNeg = true;
+        }
+
+        if (maze[playerY - 1][playerX].equals(".")) {
             paths++;
-        } if (playerY < maze.length && maze[playerY + 1][playerX].equals(".")) {
+        } if (maze[playerY + 1][playerX].equals(".")) {
             paths++;
-        } if (playerX > 0 && maze[playerY][playerX - 1].equals(".")){
+        } if (maze[playerY][playerX - 1].equals(".")){
             paths++;
-        } if (playerX < maze[0].length && maze[playerY][playerX + 1].equals(".")) {
+        } if (maze[playerY][playerX + 1].equals(".")) {
             paths++;
         }
         return paths;
@@ -38,6 +56,18 @@ public class MazeSolver {
     //go through entire maze one dead end at a time
     //if dead end, go back to check point, and then test everything else
     public void runMaze(){
+        if (resetPlayerYNeg){
+            playerY ++;
+        } else if (resetPlayerYPos){
+            playerY --;
+        }
+
+        if (resetPlayerXPos){
+            playerX--;
+        } else if (resetPlayerXNeg){
+            playerX++;
+        }
+
         paths = 0;
         getLocation();
         if (getPaths() == 1) {  // only one path
