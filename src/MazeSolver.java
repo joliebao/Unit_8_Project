@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MazeSolver {
     private String[][] maze;
@@ -10,10 +9,6 @@ public class MazeSolver {
     private int savedY;
     private int savedIdx;
     private ArrayList<String> coordinates;
-    private boolean resetPlayerXPos;
-    private boolean resetPlayerXNeg;
-    private boolean resetPlayerYPos;
-    private boolean resetPlayerYNeg;
 
     // Constructor
     public MazeSolver(String[][] m){
@@ -24,30 +19,13 @@ public class MazeSolver {
     //count num of possible paths
     public int getPaths(){
         // need to fix these conditions
-
-        if (playerX + 1 == maze.length){
-            playerX --;
-            resetPlayerXPos = true;
-        } else if (playerX - 1 == -1){
-            playerX ++;
-            resetPlayerXNeg = true;
-        }
-
-        if (playerY + 1 == maze[0].length){
-            playerY --;
-            resetPlayerYPos = true;
-        } else if (playerY - 1 == -1){
-            playerY ++;
-            resetPlayerYNeg = true;
-        }
-
-        if (maze[playerY - 1][playerX].equals(".")) {
+        if (playerY > 0 && maze[playerY - 1][playerX].equals(".")) {
             paths++;
-        } if (maze[playerY + 1][playerX].equals(".")) {
+        } if (playerY < maze[0].length - 1 && maze[playerY + 1][playerX].equals(".")) {
             paths++;
-        } if (maze[playerY][playerX - 1].equals(".")){
+        } if (playerX > 0 && maze[playerY][playerX - 1].equals(".")){
             paths++;
-        } if (maze[playerY][playerX + 1].equals(".")) {
+        } if (playerX < maze.length - 1 && maze[playerY][playerX + 1].equals(".")) {
             paths++;
         }
         return paths;
@@ -56,27 +34,18 @@ public class MazeSolver {
     //go through entire maze one dead end at a time
     //if dead end, go back to check point, and then test everything else
     public void runMaze(){
-        if (resetPlayerYNeg){
-            playerY ++;
-        } else if (resetPlayerYPos){
-            playerY --;
-        }
-
-        if (resetPlayerXPos){
-            playerX--;
-        } else if (resetPlayerXNeg){
-            playerX++;
-        }
-
         paths = 0;
+        paths = getPaths();
         getLocation();
-        if (getPaths() == 1) {  // only one path
+        if (paths == 1) {  // only one path
             move();
-        } else if (getPaths() > 1){ // more than one path
+        } else if (paths > 1){ // more than one path
             savedX = playerX - 1;
+            savedY = playerY - 1;
             savedIdx = coordinates.size();
+            maze[savedX][savedY] = "#";
             move();
-        } else if (getPaths() == 0){    // dead end
+        } else if (paths == 0){    // dead end
             // Setting x and y location bounds
             if (savedX < 0){
                 savedX = 0;
