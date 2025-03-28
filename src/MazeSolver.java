@@ -60,6 +60,8 @@ public class MazeSolver {
             maze[s.getY()][s.getX()] = ".";
             playerX = s.getX();
             playerY = s.getY();
+
+            saves.removeLast();
         }
         System.out.println(getLocation());
     }
