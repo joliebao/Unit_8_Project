@@ -10,8 +10,6 @@ public class MazeSolver {
     private int playerY = 0;
     private int paths = 0;
 
-    private int savedX;
-    private int savedY;
     private int savedIdx;
 
     // Constructor
@@ -28,11 +26,11 @@ public class MazeSolver {
     //count num of possible paths
     public int getPaths(){
         // need to fix these conditions
-        if (playerY - 1 > 0 && maze[playerY - 1][playerX].equals(".")) {
+        if (playerY - 1 >= 0 && maze[playerY - 1][playerX].equals(".")) {
             paths++;
         } if (playerY + 1 < maze.length && maze[playerY + 1][playerX].equals(".")) {
             paths++;
-        } if (playerX - 1 > 0 && maze[playerY][playerX - 1].equals(".")) {
+        } if (playerX - 1 >= 0 && maze[playerY][playerX - 1].equals(".")) {
             paths++;
         } if (playerX + 1 < maze[0].length && maze[playerY][playerX + 1].equals(".")) {
             paths++;
@@ -45,41 +43,41 @@ public class MazeSolver {
     public void runMaze(){
         paths = 0;  // reset paths
         paths = getPaths(); // find number of paths that can be taken
-        if (paths == 1) {  // only one path
+        if (paths == 1) {
             move();
-        } else if (paths > 1){ // more than one path
-            savedX = playerX;
-            savedY = playerY;
+        } else if (paths > 1){
+            saves.add(new SavePoint(playerX, playerY));
             savedIdx = coordinates.size();
-            maze[playerY][playerX] = "#";
+            maze[playerY][playerX] = "/";
             move();
-        } else if (paths == 0){    // dead end
-            maze[playerY][playerX] = "#";   // close off that location
+        } else if (paths == 0){
+            maze[playerY][playerX] = "/";   // close off that location
             for (int i = 0; i < coordinates.size() - savedIdx; i ++){
                 coordinates.removeLast();
             }
             // bring player back to saved point
-            maze[savedY][savedX] = ".";
-            playerX = savedX;
-            playerY = savedY;
+            SavePoint s = saves.getLast();
+            maze[s.getY()][s.getX()] = ".";
+            playerX = s.getX();
+            playerY = s.getY();
         }
         System.out.println(getLocation());
     }
 
     public void move(){
-        if (playerY > 0 && maze[playerY - 1][playerX].equals(".")) {
+        if (playerY - 1 >= 0 && maze[playerY - 1][playerX].equals(".")) {
             checkUp();
-        } else if (playerY < maze.length && maze[playerY + 1][playerX].equals(".")) {
+        } else if (playerY + 1 < maze.length && maze[playerY + 1][playerX].equals(".")) {
             checkDown();
-        } else if (playerX > 0 && maze[playerY][playerX - 1].equals(".")) {
+        } else if (playerX - 1 >= 0 && maze[playerY][playerX - 1].equals(".")) {
             checkLeft();
-        } else if (playerX < maze[0].length && maze[playerY][playerX + 1].equals(".")) {
+        } else if (playerX + 1 < maze[0].length && maze[playerY][playerX + 1].equals(".")) {
             checkRight();
         }
     }
 
     private void checkUp(){
-        maze[playerY][playerX] = "#";
+        maze[playerY][playerX] = "/";
         coordinates.add("(" + playerY + ", " + playerX + ")");
         playerY--;
         if (playerY < 0) {
@@ -88,7 +86,7 @@ public class MazeSolver {
     }
 
     private void checkDown(){
-        maze[playerY][playerX] = "#";
+        maze[playerY][playerX] = "/";
         coordinates.add("(" + playerY + ", " + playerX + ")");
         playerY++;
         if (playerY > maze.length - 1) {
@@ -97,7 +95,7 @@ public class MazeSolver {
     }
 
     private void checkRight(){
-        maze[playerY][playerX] = "#";
+        maze[playerY][playerX] = "/";
         coordinates.add("(" + playerY + ", " + playerX + ")");
         playerX++;
         if (playerX > maze[0].length - 1) {
@@ -106,7 +104,7 @@ public class MazeSolver {
     }
 
     private void checkLeft(){
-        maze[playerY][playerX] = "#";
+        maze[playerY][playerX] = "/";
         coordinates.add("(" + playerY + ", " + playerX + ")");
         playerX--;
         if (playerX < 0) {
