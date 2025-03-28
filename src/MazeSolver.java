@@ -27,14 +27,14 @@ public class MazeSolver {
 
     //count num of possible paths
     public int getPaths(){
-        // need to fix these conditions]
-        if (playerY > 0 && maze[playerY - 1][playerX].equals(".")) {
+        // need to fix these conditions
+        if (playerY - 1 > 0 && maze[playerY - 1][playerX].equals(".")) {
             paths++;
-        } if (playerY < maze.length && maze[playerY + 1][playerX].equals(".")) {
+        } if (playerY + 1 < maze.length && maze[playerY + 1][playerX].equals(".")) {
             paths++;
-        } if (playerX > 0 && maze[playerY][playerX - 1].equals(".")) {
+        } if (playerX - 1 > 0 && maze[playerY][playerX - 1].equals(".")) {
             paths++;
-        } if (playerX < maze[0].length && maze[playerY][playerX + 1].equals(".")) {
+        } if (playerX + 1 < maze[0].length && maze[playerY][playerX + 1].equals(".")) {
             paths++;
         }
         return paths;
@@ -45,7 +45,6 @@ public class MazeSolver {
     public void runMaze(){
         paths = 0;  // reset paths
         paths = getPaths(); // find path num
-        System.out.println(getLocation());
         if (paths == 1) {  // only one path
             move();
         } else if (paths > 1){ // more than one path
@@ -55,19 +54,6 @@ public class MazeSolver {
             maze[playerY][playerX] = "#";
             move();
         } else if (paths == 0){    // dead end
-            // Setting x and y location bounds
-            if (savedX < 0){
-                savedX = 0;
-            } else if (savedX > maze[0].length - 1){
-                savedX = maze[0].length - 1;
-            }
-            savedY = playerY - 1;
-            if (savedY < 0){
-                savedY = 0;
-            } else if (savedY > maze.length - 1){
-                savedY = maze.length - 1;
-            }
-
             maze[playerY][playerX] = "#";   // close off that location
             for (int i = 0; i < coordinates.size() - savedIdx; i ++){
                 coordinates.removeLast();
@@ -77,6 +63,7 @@ public class MazeSolver {
             playerX = savedX;
             playerY = savedY;
         }
+        System.out.println(getLocation());
     }
 
     public void move(){
