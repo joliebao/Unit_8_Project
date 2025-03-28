@@ -3,7 +3,8 @@ import java.util.Arrays;
 
 public class MazeSolver {
     private String[][] maze;
-    private ArrayList<String> coordinates;
+    private ArrayList<String> coordinates = new ArrayList<String>();
+    private ArrayList<SavePoint> saves = new ArrayList<SavePoint>();
 
     private int playerX = 0;
     private int playerY = 0;
@@ -15,7 +16,6 @@ public class MazeSolver {
 
     // Constructor
     public MazeSolver(String[][] m){
-        coordinates = new ArrayList<String>();
         maze = m;
     }
 
@@ -44,7 +44,7 @@ public class MazeSolver {
     // if dead end, go back to check point, and then test everything else
     public void runMaze(){
         paths = 0;  // reset paths
-        paths = getPaths(); // find path num
+        paths = getPaths(); // find number of paths that can be taken
         if (paths == 1) {  // only one path
             move();
         } else if (paths > 1){ // more than one path
