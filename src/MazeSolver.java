@@ -2,13 +2,15 @@ import java.util.ArrayList;
 
 public class MazeSolver {
     private String[][] maze;
+    private ArrayList<String> coordinates;
+
     private int playerX = 0;
     private int playerY = 0;
     private int paths = 0;
+
     private int savedX;
     private int savedY;
     private int savedIdx;
-    private ArrayList<String> coordinates;
 
     // Constructor
     public MazeSolver(String[][] m){
@@ -21,29 +23,29 @@ public class MazeSolver {
         // need to fix these conditions
         if (playerY > 0 && maze[playerY - 1][playerX].equals(".")) {
             paths++;
-        } if (playerY < maze[0].length - 1 && maze[playerY + 1][playerX].equals(".")) {
+        } else if (playerY < maze.length && maze[playerY + 1][playerX].equals(".")) {
             paths++;
-        } if (playerX > 0 && maze[playerY][playerX - 1].equals(".")){
+        } else if (playerX > 0 && maze[playerY][playerX - 1].equals(".")) {
             paths++;
-        } if (playerX < maze.length - 1 && maze[playerY][playerX + 1].equals(".")) {
+        } else if (playerX < maze[0].length && maze[playerY][playerX + 1].equals(".")) {
             paths++;
         }
         return paths;
     }
 
-    //go through entire maze one dead end at a time
-    //if dead end, go back to check point, and then test everything else
+    // go through entire maze one dead end at a time
+    // if dead end, go back to check point, and then test everything else
     public void runMaze(){
-        paths = 0;
-        paths = getPaths();
+        paths = 0;  // reset paths
+        paths = getPaths(); // find path num
         getLocation();
         if (paths == 1) {  // only one path
             move();
         } else if (paths > 1){ // more than one path
-            savedX = playerX - 1;
-            savedY = playerY - 1;
+            savedX = playerX;
+            savedY = playerY;
             savedIdx = coordinates.size();
-            maze[savedX][savedY] = "#";
+            maze[playerY][playerX] = "#";
             move();
         } else if (paths == 0){    // dead end
             // Setting x and y location bounds
