@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MazeSolver {
     private String[][] maze;
@@ -18,16 +19,22 @@ public class MazeSolver {
         maze = m;
     }
 
+    public void printMaze(){
+        for (int i = 0; i < maze.length; i++){
+            System.out.println(Arrays.toString(maze[i]));
+        }
+    }
+
     //count num of possible paths
     public int getPaths(){
-        // need to fix these conditions
+        // need to fix these conditions]
         if (playerY > 0 && maze[playerY - 1][playerX].equals(".")) {
             paths++;
-        } else if (playerY < maze.length && maze[playerY + 1][playerX].equals(".")) {
+        } if (playerY < maze.length && maze[playerY + 1][playerX].equals(".")) {
             paths++;
-        } else if (playerX > 0 && maze[playerY][playerX - 1].equals(".")) {
+        } if (playerX > 0 && maze[playerY][playerX - 1].equals(".")) {
             paths++;
-        } else if (playerX < maze[0].length && maze[playerY][playerX + 1].equals(".")) {
+        } if (playerX < maze[0].length && maze[playerY][playerX + 1].equals(".")) {
             paths++;
         }
         return paths;
@@ -38,7 +45,7 @@ public class MazeSolver {
     public void runMaze(){
         paths = 0;  // reset paths
         paths = getPaths(); // find path num
-        getLocation();
+        System.out.println(getLocation());
         if (paths == 1) {  // only one path
             move();
         } else if (paths > 1){ // more than one path
@@ -69,6 +76,18 @@ public class MazeSolver {
             maze[savedY][savedX] = ".";
             playerX = savedX;
             playerY = savedY;
+        }
+    }
+
+    public void move(){
+        if (playerY > 0 && maze[playerY - 1][playerX].equals(".")) {
+            checkUp();
+        } else if (playerY < maze.length && maze[playerY + 1][playerX].equals(".")) {
+            checkDown();
+        } else if (playerX > 0 && maze[playerY][playerX - 1].equals(".")) {
+            checkLeft();
+        } else if (playerX < maze[0].length && maze[playerY][playerX + 1].equals(".")) {
+            checkRight();
         }
     }
 
@@ -105,18 +124,6 @@ public class MazeSolver {
         playerX--;
         if (playerX < 0) {
             playerX = 0;
-        }
-    }
-
-    public void move(){
-        if (playerY > 0 && maze[playerY - 1][playerX].equals(".")) {
-            checkUp();
-        } else if (playerY < maze.length && maze[playerY + 1][playerX].equals(".")) {
-            checkDown();
-        } else if (playerX > 0 && maze[playerY][playerX - 1].equals(".")) {
-            checkLeft();
-        } else if (playerX < maze[0].length && maze[playerY][playerX + 1].equals(".")) {
-            checkRight();
         }
     }
 
