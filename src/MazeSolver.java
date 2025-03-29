@@ -40,35 +40,36 @@ public class MazeSolver {
     // go through entire maze one dead end at a time
     // if dead end, go back to check point, and then test everything else
     public void runMaze(){
-        System.out.println(saves);
         paths = 0;  // reset paths
         paths = getPaths(); // find number of paths that can be taken
-        if (paths == 1) {
+        System.out.println(paths);
+        if (paths == 1) {   // one way
             move();
             System.out.println("SINGLE PATH WORKING & RUNNING");
         } else if (paths > 1){
-            saves.add(new SavePoint(playerX, playerY, paths));
+            saves.add(new SavePoint(playerX, playerY));
             savedIdx = coordinates.size();
             maze[playerY][playerX] = "/";
             move();
-        } else if (paths == 0){
+        } else if (paths == 0){     // dead end
             maze[playerY][playerX] = "/";   // close off that location
             for (int i = 0; i < coordinates.size() - savedIdx; i ++){
                 coordinates.removeLast();
             }
+
             // bring player back to saved point
             SavePoint s = saves.getLast();
+            maze[s.getY()][s.getX()] = ".";
             playerX = s.getX();
             playerY = s.getY();
         }
-        System.out.println(getLocation());
     }
 
     public void move(){
-        if (playerY - 1 >= 0 && maze[playerY - 1][playerX].equals(".")) {
-            checkUp();
-        } else if (playerY + 1 < maze.length && maze[playerY + 1][playerX].equals(".")) {
+        if (playerY + 1 < maze.length && maze[playerY + 1][playerX].equals(".")) {
             checkDown();
+        } else if (playerY - 1 >= 0 && maze[playerY - 1][playerX].equals(".")) {
+            checkUp();
         } else if (playerX - 1 >= 0 && maze[playerY][playerX - 1].equals(".")) {
             checkLeft();
         } else if (playerX + 1 < maze[0].length && maze[playerY][playerX + 1].equals(".")) {

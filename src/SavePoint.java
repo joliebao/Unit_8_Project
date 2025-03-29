@@ -3,10 +3,10 @@ public class SavePoint {
     private int y;
     private int numPaths;
 
-    public SavePoint (int pY, int pX, int nPaths){
+    public SavePoint (int pY, int pX){
         x = pX;
         y = pY;
-        numPaths = nPaths;
+//        numPaths = nPaths;
     }
 
     public int getX() {
