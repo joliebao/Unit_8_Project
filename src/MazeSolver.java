@@ -6,7 +6,6 @@ public class MazeSolver {
     private ArrayList<String> coordinates = new ArrayList<String>();
     private ArrayList<SavePoint> saves = new ArrayList<SavePoint>();
 
-    private boolean reset;
     private int playerX = 0;
     private int playerY = 0;
     private int paths = 0;
@@ -42,12 +41,8 @@ public class MazeSolver {
     // if dead end, go back to check point, and then test everything else
     public void runMaze(){
         System.out.println(saves);
-        if (!(reset)) {
-            paths = 0;  // reset paths
-            paths = getPaths(); // find number of paths that can be taken
-        } else {
-            paths = saves.getLast().getNumPaths() - 1;
-        }
+        paths = 0;  // reset paths
+        paths = getPaths(); // find number of paths that can be taken
         if (paths == 1) {
             move();
             System.out.println("SINGLE PATH WORKING & RUNNING");
@@ -65,7 +60,6 @@ public class MazeSolver {
             SavePoint s = saves.getLast();
             playerX = s.getX();
             playerY = s.getY();
-            reset = true;
         }
         System.out.println(getLocation());
     }
