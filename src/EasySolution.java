@@ -1,21 +1,14 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
-// :( It won't move after returning to a safe spot.
-
-public class MazeSolver {
+public class EasySolution{
     private String[][] maze;
     private ArrayList<String> coordinates = new ArrayList<String>();
-    private ArrayList<SavePoint> saves = new ArrayList<SavePoint>();
 
     private int playerX = 0;
     private int playerY = 0;
-    private int paths = 0;
 
-    private int savedIdx;
-
-    // Constructor
-    public MazeSolver(String[][] m){
+    public EasySolution(String[][] m){
         maze = m;
     }
 
@@ -25,45 +18,25 @@ public class MazeSolver {
         }
     }
 
-    //count num of possible paths
-    public int getPaths(){
-        if (playerY - 1 >= 0 && maze[playerY - 1][playerX].equals(".")) {
-            paths++;
-        } if (playerY + 1 < maze.length && maze[playerY + 1][playerX].equals(".")) {
-            paths++;
-        } if (playerX - 1 >= 0 && maze[playerY][playerX - 1].equals(".")) {
-            paths++;
-        } if (playerX + 1 < maze[0].length && maze[playerY][playerX + 1].equals(".")) {
-            paths++;
-        }
-        return paths;
-    }
-
-    // go through entire maze one dead end at a time
-    // if dead end, go back to check point, and then test everything else
-    public void runMaze(){
-        paths = 0;  // reset paths
-        paths = getPaths(); // find number of paths that can be taken
-        System.out.println(paths);
-        if (paths == 1) {   // one way
-            move();
-            System.out.println("SINGLE PATH WORKING & RUNNING");
-        } else if (paths > 1){
-            saves.add(new SavePoint(playerX, playerY));
-            savedIdx = coordinates.size();
-            maze[playerY][playerX] = "/";
-            move();
-        } else if (paths == 0){     // dead end
-            maze[playerY][playerX] = "/";   // close off that location
-            for (int i = 0; i < coordinates.size() - savedIdx; i ++){
+    public void solveMaze(){
+        int lastX = playerX;
+        int lastY = playerY;
+        move();
+        if (lastY == playerY && lastX == playerX){
+            maze[playerY][playerX] = "#";
+            while (playerY > 0 && playerX > 0){
+                System.out.println("RUNNING");
+                playerY--;
+                if (playerY < 0){
+                    playerY = 0;
+                }
+                playerX--;
+                if (playerX < 0){
+                    playerX = 0;
+                }
+                maze[playerY][playerX] = ".";
                 coordinates.removeLast();
             }
-
-            // bring player back to saved point
-            SavePoint s = saves.getLast();
-            maze[s.getY()][s.getX()] = ".";
-            playerX = s.getX();
-            playerY = s.getY();
         }
     }
 
@@ -80,7 +53,7 @@ public class MazeSolver {
     }
 
     private void checkUp(){
-        maze[playerY][playerX] = "/";
+        maze[playerY][playerX] = "o";
         coordinates.add("(" + playerY + ", " + playerX + ")");
         playerY--;
         if (playerY < 0) {
@@ -89,7 +62,7 @@ public class MazeSolver {
     }
 
     private void checkDown(){
-        maze[playerY][playerX] = "/";
+        maze[playerY][playerX] = "o";
         coordinates.add("(" + playerY + ", " + playerX + ")");
         playerY++;
         if (playerY > maze.length - 1) {
@@ -98,7 +71,7 @@ public class MazeSolver {
     }
 
     private void checkRight(){
-        maze[playerY][playerX] = "/";
+        maze[playerY][playerX] = "o";
         coordinates.add("(" + playerY + ", " + playerX + ")");
         playerX++;
         if (playerX > maze[0].length - 1) {
@@ -107,7 +80,7 @@ public class MazeSolver {
     }
 
     private void checkLeft(){
-        maze[playerY][playerX] = "/";
+        maze[playerY][playerX] = "o";
         coordinates.add("(" + playerY + ", " + playerX + ")");
         playerX--;
         if (playerX < 0) {

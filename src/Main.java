@@ -8,15 +8,13 @@ public class Main {
     public static void main(String[] args) {
         String[][] maze = getMaze("src/grid");
 
-        MazeSolver m = new MazeSolver(maze);
+        EasySolution m = new EasySolution(maze);
 
         int col = maze[0].length - 1;
         int row = maze.length - 1;
 
-        m.printMaze();
-
         while (!m.getLocation().equals("(" + row + ", " + col + ")")){
-            m.runMaze();
+            m.solveMaze();
             m.printMaze();
             System.out.println();
         }
