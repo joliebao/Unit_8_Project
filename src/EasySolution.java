@@ -5,6 +5,7 @@ public class EasySolution{
     private String[][] maze;
     private ArrayList<String> coordinates = new ArrayList<String>();
 
+    private boolean reverse;
     private int playerX = 0;
     private int playerY = 0;
 
@@ -23,8 +24,14 @@ public class EasySolution{
         int lastY = playerY;
         move();
         if (lastY == playerY && lastX == playerX) {
-            maze[playerY][playerX] = "#";
-
+            maze[lastX][lastY] = "#";
+            reverse = true;
+        }
+        if (reverse){
+            while (playerY > 0 && playerX > 0) {
+                moveBack();
+            }
+            reverse = false;
         }
     }
 
@@ -40,9 +47,24 @@ public class EasySolution{
         }
     }
 
+    public void moveBack(){
+        if (playerY + 1 < maze.length && maze[playerY + 1][playerX].equals("o")) {
+            checkDown();
+        } else if (playerY - 1 >= 0 && maze[playerY - 1][playerX].equals("o")) {
+            checkUp();
+        } else if (playerX - 1 >= 0 && maze[playerY][playerX - 1].equals("o")) {
+            checkLeft();
+        } else if (playerX + 1 < maze[0].length && maze[playerY][playerX + 1].equals("o")) {
+            checkRight();
+        }
+    }
 
     private void checkUp(){
-        maze[playerY][playerX] = "o";
+        if (reverse){
+            maze[playerY][playerX] = ".";
+        } else {
+            maze[playerY][playerX] = "o";
+        }
         coordinates.add("(" + playerY + ", " + playerX + ")");
         playerY--;
         if (playerY < 0) {
@@ -51,7 +73,11 @@ public class EasySolution{
     }
 
     private void checkDown(){
-        maze[playerY][playerX] = "o";
+        if (reverse){
+            maze[playerY][playerX] = ".";
+        } else {
+            maze[playerY][playerX] = "o";
+        }
         coordinates.add("(" + playerY + ", " + playerX + ")");
         playerY++;
         if (playerY > maze.length - 1) {
@@ -60,7 +86,11 @@ public class EasySolution{
     }
 
     private void checkRight(){
-        maze[playerY][playerX] = "o";
+        if (reverse){
+            maze[playerY][playerX] = ".";
+        } else {
+            maze[playerY][playerX] = "o";
+        }
         coordinates.add("(" + playerY + ", " + playerX + ")");
         playerX++;
         if (playerX > maze[0].length - 1) {
@@ -69,7 +99,11 @@ public class EasySolution{
     }
 
     private void checkLeft(){
-        maze[playerY][playerX] = "o";
+        if (reverse){
+            maze[playerY][playerX] = ".";
+        } else {
+            maze[playerY][playerX] = "o";
+        }
         coordinates.add("(" + playerY + ", " + playerX + ")");
         playerX--;
         if (playerX < 0) {
