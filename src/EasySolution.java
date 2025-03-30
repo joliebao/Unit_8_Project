@@ -18,25 +18,13 @@ public class EasySolution{
         }
     }
 
-    public void solveMaze(){
+    public void solveMaze() {
         int lastX = playerX;
         int lastY = playerY;
         move();
-        if (lastY == playerY && lastX == playerX){
+        if (lastY == playerY && lastX == playerX) {
             maze[playerY][playerX] = "#";
-            while (playerY > 0 && playerX > 0){
-                System.out.println("RUNNING");
-                playerY--;
-                if (playerY < 0){
-                    playerY = 0;
-                }
-                playerX--;
-                if (playerX < 0){
-                    playerX = 0;
-                }
-                maze[playerY][playerX] = ".";
-                coordinates.removeLast();
-            }
+
         }
     }
 
@@ -51,6 +39,7 @@ public class EasySolution{
             checkRight();
         }
     }
+
 
     private void checkUp(){
         maze[playerY][playerX] = "o";
