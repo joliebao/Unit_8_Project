@@ -24,12 +24,13 @@ public class EasySolution{
         int lastY = playerY;
         move();
         if (lastY == playerY && lastX == playerX) {
-            maze[lastX][lastY] = "#";
             reverse = true;
         }
         if (reverse){
             while (playerY > 0 && playerX > 0) {
                 moveBack();
+                coordinates.removeLast();
+                maze[lastY][lastX] = "#";
             }
             reverse = false;
         }
@@ -64,8 +65,8 @@ public class EasySolution{
             maze[playerY][playerX] = ".";
         } else {
             maze[playerY][playerX] = "o";
+            coordinates.add("(" + playerY + ", " + playerX + ")");
         }
-        coordinates.add("(" + playerY + ", " + playerX + ")");
         playerY--;
         if (playerY < 0) {
             playerY = 0;
@@ -77,8 +78,8 @@ public class EasySolution{
             maze[playerY][playerX] = ".";
         } else {
             maze[playerY][playerX] = "o";
+            coordinates.add("(" + playerY + ", " + playerX + ")");
         }
-        coordinates.add("(" + playerY + ", " + playerX + ")");
         playerY++;
         if (playerY > maze.length - 1) {
             playerY = maze.length - 1;
@@ -90,8 +91,8 @@ public class EasySolution{
             maze[playerY][playerX] = ".";
         } else {
             maze[playerY][playerX] = "o";
+            coordinates.add("(" + playerY + ", " + playerX + ")");
         }
-        coordinates.add("(" + playerY + ", " + playerX + ")");
         playerX++;
         if (playerX > maze[0].length - 1) {
             playerX = maze[0].length - 1;
@@ -103,8 +104,8 @@ public class EasySolution{
             maze[playerY][playerX] = ".";
         } else {
             maze[playerY][playerX] = "o";
+            coordinates.add("(" + playerY + ", " + playerX + ")");
         }
-        coordinates.add("(" + playerY + ", " + playerX + ")");
         playerX--;
         if (playerX < 0) {
             playerX = 0;
