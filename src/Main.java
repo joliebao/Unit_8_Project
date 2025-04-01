@@ -16,6 +16,7 @@ public class Main {
         while (!m.getLocation().equals("(" + row + ", " + col + ")")){
             m.solveMaze();
             m.printMaze();
+            System.out.println(m.getLocation());
             System.out.println();
         }
 

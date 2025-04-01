@@ -27,10 +27,10 @@ public class EasySolution{
             reverse = true;
         }
         if (reverse){
-            while (playerY > 0 && playerX > 0) {
+            while (playerY > 0 || playerX > 0) {
                 moveBack();
-                coordinates.removeLast();
                 maze[lastY][lastX] = "#";
+                coordinates.removeLast();
             }
             reverse = false;
         }
